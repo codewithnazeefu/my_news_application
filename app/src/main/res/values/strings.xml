@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">My News App</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="disc">The Information reported on Monday that Elon Musk\'s SpaceX is on pace to generate $8 billion in 2023 sales. That puts the shares\' price-to-sale ratio at about 19 times—more than twice that of Tesla stock.#elonmusk</string>
+    <string name="article">article</string>
+</resources>
