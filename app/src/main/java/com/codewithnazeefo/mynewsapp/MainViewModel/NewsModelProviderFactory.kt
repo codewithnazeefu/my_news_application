@@ -1,4 +1,4 @@
-package com.codewithnazeefo.mynewsapp.ui
+package com.codewithnazeefo.mynewsapp.MainViewModel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

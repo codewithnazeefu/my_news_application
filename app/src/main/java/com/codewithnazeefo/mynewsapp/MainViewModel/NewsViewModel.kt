@@ -1,12 +1,11 @@
-package com.codewithnazeefo.mynewsapp.ui
+package com.codewithnazeefo.mynewsapp.MainViewModel
 
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.ConnectivityManager.*
+import android.net.NetworkCapabilities
 import android.net.NetworkCapabilities.*
-import android.os.Build
-import android.os.Build.VERSION_CODES.Q
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -40,18 +39,15 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) : Andr
 
     fun getBreakingNews(countryCode: String) = viewModelScope.launch {
         safeBreakingNewsCall(countryCode)
-        val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
-        breakingNews.postValue(handleBreakingNewsResponse(response))
+
 
     }
 
     fun searchNews(searchQuery: String) = viewModelScope.launch {
         safeSearchNewsCall(searchQuery)
-        val response = newsRepository.searchNews(searchQuery, searchNewsPage)
-        searchNews.postValue(handleSearchNewsResponse(response))
+
 
     }
-
     private fun handleBreakingNewsResponse(response: Response<ApiResponse>) : Resource<ApiResponse> {
         if(response.isSuccessful) {
             response.body()?.let { resultResponse ->
@@ -68,6 +64,24 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) : Andr
         }
         return Resource.Error(response.message())
     }
+
+    private suspend fun safeBreakingNewsCall(countryCode: String) {
+        breakingNews.postValue(Resource.Loading())
+        try {
+            if(hasInternetConnection(this.getApplication())) {
+                val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
+                breakingNews.postValue(handleBreakingNewsResponse(response))
+            } else {
+                breakingNews.postValue(Resource.Error("No internet connection"))
+            }
+        } catch(t: Throwable) {
+            when(t) {
+                is IOException -> breakingNews.postValue(Resource.Error("Network Failure"))
+                else -> breakingNews.postValue(Resource.Error("Conversion Error"))
+            }
+        }
+    }
+
 
 
 
@@ -105,7 +119,7 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) : Andr
         newSearchQuery = searchQuery
         searchNews.postValue(Resource.Loading())
         try {
-            if(hasInternetConnection()) {
+            if(hasInternetConnection(this.getApplication())) {
                 val response = newsRepository.searchNews(searchQuery, searchNewsPage)
                 searchNews.postValue(handleSearchNewsResponse(response))
             } else {
@@ -119,35 +133,26 @@ class NewsViewModel(app: Application, val newsRepository: NewsRepository) : Andr
         }
     }
 
-    private suspend fun safeBreakingNewsCall(countryCode: String) {
-        breakingNews.postValue(Resource.Loading())
-        try {
-            if(hasInternetConnection()) {
-                val response = newsRepository.getBreakingNews(countryCode, breakingNewsPage)
-                breakingNews.postValue(handleBreakingNewsResponse(response))
-            } else {
-                breakingNews.postValue(Resource.Error("No internet connection"))
-            }
-        } catch(t: Throwable) {
-            when(t) {
-                is IOException -> breakingNews.postValue(Resource.Error("Network Failure"))
-                else -> breakingNews.postValue(Resource.Error("Conversion Error"))
-            }
-        }
-    }
 
-    private fun hasInternetConnection(): Boolean {
-        val connectivityManager = getApplication<applicationClass>().getSystemService(
-            Context.CONNECTIVITY_SERVICE
-        ) as ConnectivityManager
-        val activeNetwork = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
-        return when {
-            capabilities.hasTransport(TRANSPORT_WIFI) -> true
-            capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
-            capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
-            else -> false
+    fun hasInternetConnection(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
         }
         return false
     }
-}
+    }

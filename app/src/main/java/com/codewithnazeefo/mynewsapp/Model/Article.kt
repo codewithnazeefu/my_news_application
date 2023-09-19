@@ -9,7 +9,7 @@ import java.io.Serializable
 
 data class Article(
     @PrimaryKey(autoGenerate = true)
-    val id :Int? = null,
+    val id :Int = 0,
     val author: String,
     val content: String,
     val description: String,
@@ -18,4 +18,12 @@ data class Article(
     val title: String,
     val url: String,
     val urlToImage: String
-):Serializable
+):Serializable{
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        if(url.isEmpty()){
+            result = 31 * result + url.hashCode()
+        }
+        return result
+    }
+}

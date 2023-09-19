@@ -72,7 +72,7 @@ dependencies {
 
 
 
-
+    implementation 'com.github.mukeshsolanki:liquidrefreshlayout:1.0.3'
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 

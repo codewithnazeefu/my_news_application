@@ -1,23 +1,17 @@
 package com.codewithnazeefo.mynewsapp.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavArgs
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Registry.NoImageHeaderParserException
 import com.codewithnazeefo.mynewsapp.MainActivity
-import com.codewithnazeefo.mynewsapp.Model.Article
+import com.codewithnazeefo.mynewsapp.MainViewModel.NewsViewModel
 import com.codewithnazeefo.mynewsapp.R
 import com.codewithnazeefo.mynewsapp.databinding.FragmentArticleBinding
-import com.codewithnazeefo.mynewsapp.util.Resource
 import com.google.android.material.snackbar.Snackbar
-import retrofit2.http.Url
 
 class ArticleFragment : Fragment(R.layout.fragment_article) {
 

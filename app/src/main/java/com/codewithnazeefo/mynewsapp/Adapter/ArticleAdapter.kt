@@ -1,6 +1,8 @@
 package com.codewithnazeefo.mynewsapp.Adapter
 
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 
 import android.view.ViewGroup
@@ -8,6 +10,7 @@ import android.view.ViewGroup
 
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 
 
@@ -17,12 +20,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.codewithnazeefo.mynewsapp.Model.Article
 import com.codewithnazeefo.mynewsapp.R
+import com.codewithnazeefo.mynewsapp.applicationClass
 import com.codewithnazeefo.mynewsapp.databinding.BreakingNewsItemDesignBinding
 import com.codewithnazeefo.mynewsapp.ui.BreakingNewsFragment
 
 
 class ArticleAdapter() :RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
-
+     lateinit var context :Context
     private var onItemClickListener: ((Article) -> Unit)? = null
 
 
@@ -45,7 +49,7 @@ class ArticleAdapter() :RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>()
 
     val differ = AsyncListDiffer(this , differCallback)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
-        var binding = BreakingNewsItemDesignBinding.inflate(LayoutInflater.from(parent.context)
+        val binding = BreakingNewsItemDesignBinding.inflate(LayoutInflater.from(parent.context)
         ,parent,false)
      return ArticleViewHolder(binding)
     }
@@ -62,8 +66,8 @@ class ArticleAdapter() :RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>()
         holder.itemView.apply {
             val ivArticleImage: ImageView = findViewById(R.id.ivArticleImage)
             Glide.with(this).load(article.urlToImage).into(ivArticleImage)
-          val tvSource = findViewById<TextView>(R.id.tvSource)
-          tvSource.text = article.source.name
+            val tvSource = findViewById<TextView>(R.id.tvSource)
+            tvSource.text = article.source.name
             val tvTitle: TextView = findViewById(R.id.tvTitle)
             val tvDescription: TextView = findViewById(R.id.tvDescription)
 //            val tvAuthor: TextView = findViewById(R.id.)
@@ -74,13 +78,14 @@ class ArticleAdapter() :RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>()
             tvPublishedAt.text = article.publishedAt
 
         }
-
-            holder.itemView.setOnClickListener {
+        holder.itemView.setOnClickListener {
+            if (it != null) {
                 onItemClickListener?.let { it(article) }
+            } else {
+                Toast.makeText(context, "null Pointer", Toast.LENGTH_LONG).show()
             }
 
+        }
 
-    }
 
-
-}
+    }}

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codewithnazeefo.mynewsapp.Adapter.ArticleAdapter
 import com.codewithnazeefo.mynewsapp.MainActivity
+import com.codewithnazeefo.mynewsapp.MainViewModel.NewsViewModel
 import com.codewithnazeefo.mynewsapp.R
 import com.codewithnazeefo.mynewsapp.databinding.FragmentSavedNewsBinding
 import com.google.android.material.snackbar.Snackbar

@@ -1,23 +1,17 @@
 package com.codewithnazeefo.mynewsapp
 
-import android.app.Application
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.codewithnazeefo.mynewsapp.Repository.NewsRepository
 import com.codewithnazeefo.mynewsapp.databinding.ActivityMainBinding
 import com.codewithnazeefo.mynewsapp.db.ArticleDatabase
-import com.codewithnazeefo.mynewsapp.ui.NewsModelProviderFactory
-import com.codewithnazeefo.mynewsapp.ui.NewsViewModel
+import com.codewithnazeefo.mynewsapp.MainViewModel.NewsModelProviderFactory
+import com.codewithnazeefo.mynewsapp.MainViewModel.NewsViewModel
 
 class MainActivity : AppCompatActivity() {
        lateinit var navController :NavController

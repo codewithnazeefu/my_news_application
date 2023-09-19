@@ -14,18 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codewithnazeefo.mynewsapp.Adapter.ArticleAdapter
 import com.codewithnazeefo.mynewsapp.MainActivity
+import com.codewithnazeefo.mynewsapp.MainViewModel.NewsViewModel
 import com.codewithnazeefo.mynewsapp.R
 
 import com.codewithnazeefo.mynewsapp.databinding.FragmentSearchNewsBinding
 import com.codewithnazeefo.mynewsapp.util.Constant
 import com.codewithnazeefo.mynewsapp.util.Constant.Companion.SEARCH_NEWS_TIME_DELAY
 import com.codewithnazeefo.mynewsapp.util.Resource
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.IllegalStateException
 
 
 class SearchNewsFragment : Fragment(R.layout.fragment_search_news) {
